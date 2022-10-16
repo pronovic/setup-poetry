@@ -32,14 +32,14 @@ Later steps will find `poetry` on the system `$PATH` and can also reference the 
 
 The action accepts a small set of input parameters.
 
-|Input|Description|Required?|
-|-----|-----------|---------|
-|`version`|The version of Poetry to install, v1.2.0 or newer.|Yes|
-|`plugins`|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/master/plugins/#using-plugins) to install, any string that is valid input for `poetry self add`|No|
-|`cache-venv`|Whether to cache the project virtual environment, a string `"true"` or `"false"`|No|
-|`cache-poetry`|Whether the cache the Poetry runtime & cache directories, a string `"true"` or `"false"`|No|
-|`cache-suffix`|Suffix to use for the cache keys, which can be used to reset the caches if necessary|No|
-|`max-workers`|The maximum number of Poetry workers, if the default of 4x cores is too large for your GHA runners|No|
+|Input|Required?|Description|
+|-----|---------|-----------|
+|`version`|Yes|The version of Poetry to install; supports v1.2.0 or newer.|
+|`plugins`|No|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/master/plugins/#using-plugins) to install; each comma-separated value must be valid input for `poetry self add`|
+|`cache-venv`|No|Whether to cache the project virtual environment under `.venv`; a string `"true"` or `"false"`|
+|`cache-poetry`|No|Whether to cache the Poetry runtime & cache directories under `.python`; a string `"true"` or `"false"`|
+|`cache-suffix`|No|Suffix to use for the cache keys, which can be used to reset the caches if necessary; defaults to `"000"`|
+|`max-workers`|No|The maximum number of Poetry workers, if the default of 4x cores is too large for your GHA runners; ignored if unset|
 
 ## Environment
 
