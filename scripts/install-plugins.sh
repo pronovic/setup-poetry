@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: set ft=bash ts=2 sw=2:
 # Install any Poetry plugins that the caller has requested
 set -e
 if [ ! -z "$POETRY_PLUGINS" ]; then

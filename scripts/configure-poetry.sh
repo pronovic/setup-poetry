@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: set ft=bash ts=2 sw=2:
 # Configure Poetry
 
 set -e

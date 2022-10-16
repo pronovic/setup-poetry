@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: set ft=bash ts=2 sw=2:
 # Install the Poetry build tool, working around platform differences
 
 set -e
