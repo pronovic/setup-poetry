@@ -26,7 +26,7 @@ To use the action, add a stanza like this to your GitHub Actions workflow:
     cache-poetry: "true"
 ```
 
-Later steps will find `poetry` on the system `$PATH` and can also reference the other environment variables discussed below.
+The `poetry` command will be available on the system `$PATH`, and you can also reference the other environment variables discussed below.
 
 ## Configuration
 
