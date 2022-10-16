@@ -47,9 +47,9 @@ The action exports a set of environment variables to the GitHub Actions environm
 
 |Variable|Description|
 |--------|-----------|
-|`PYTHON_VERSION`|The full version of the Python interpreter on the path as `python`, like `3.9.2`|
-|`POETRY_VERSION`|The version of Poetry that was installed|
+|`PYTHON_VERSION`|The full version of the Python interpreter on the path as `python`, like `3.10.7`|
+|`POETRY_VERSION`|The version of Poetry that was installed, like `1.2.0`|
 |`POETRY_CONFIG_DIR`|Path to the Poetry configuration directory, within the GitHub Actions workspace|
 |`POETRY_HOME`|Path to the Poetry runtime install directory, within the GitHub Actions workspace|
 |`POETRY_CACHE`|Path to the Poetry cache directory, within the GitHub Actions workspace|
-|`PYTHON_KEYRING_BACKEND`|Always set to `keyring.backends.null.Keyring` to disable the Python keyring (see [issue #2692](ttps://github.com/python-poetry/poetry/issues/2692#issuecomment-1235683370))|
+|`PYTHON_KEYRING_BACKEND`|Always set to `keyring.backends.null.Keyring` to disable the Python keyring (see [Poetry issue #2692](https://github.com/python-poetry/poetry/issues/2692#issuecomment-1235683370))|
