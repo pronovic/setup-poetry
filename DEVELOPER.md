@@ -2,9 +2,7 @@
 
 This project is in active use in all of my own Python repositories under [github.com/pronovic](https://github.com/pronovic?repositories).  For a simple example of use, see the [apologies](https://github.com/pronovic/apologies) repository.
 
-As of this writing, I don't release very often, because the action meets my needs and doesn't usually require adjustment.  As a rsult, releasing is a totally manual process.
-
-Releasing is a manual process:
+As of this writing, I don't release very often, because the action meets my needs and doesn't usually require adjustment.  As a rsult, releasing is a totally manual process:
 
 ```
 $ git checkout master && git pull
