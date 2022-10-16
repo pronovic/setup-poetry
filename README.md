@@ -1,6 +1,6 @@
 # setup-poetry
 
-GitHub Action to install and set up the [Poetry](https://python-poetry.org/) build tool for [Python](https://www.python.org/).
+Shared GitHub Action to install and set up the [Poetry](https://python-poetry.org/) build tool for [Python](https://www.python.org/).  It is available in the [GitHub Marketplace](https://github.com/marketplace/actions/setup-and-install-poetry) at no cost.
 
 ## Design
 
