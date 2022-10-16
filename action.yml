@@ -1,5 +1,8 @@
 name: Setup and Install Poetry
 description: Install and set up the Poetry build tool
+branding:
+  icon: "code"
+  color: "blue"
 inputs:
   version:
     description: "Version of Poetry to install (>= 1.2.0)"
