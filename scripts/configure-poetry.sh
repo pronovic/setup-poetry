@@ -21,17 +21,9 @@ poetry config virtualenvs.create true
 echo "Setting virtualenvs.in-project=true"
 poetry config virtualenvs.in-project true
 
-if [ "$RUNNER_OS" == "Windows" ]; then
-  echo "Setting installer.parallel=false for Windows build"
-  poetry config installer.parallel "false"
-  if [ ! -z "$MAX_WORKERS" ]; then
-    echo "Note: MAX_WORKERS=$MAX_WORKERS is ignored on Windows"
-  fi
-else
-  if [ ! -z "$MAX_WORKERS" ]; then
-    echo "Setting MAX_WORKERS=$MAX_WORKERS"
-    poetry config installer.max-workers "$MAX_WORKERS"
-  fi
+if [ ! -z "$MAX_WORKERS" ]; then
+  echo "Setting MAX_WORKERS=$MAX_WORKERS"
+  poetry config installer.max-workers "$MAX_WORKERS"
 fi
 
 poetry config --list

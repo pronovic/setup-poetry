@@ -41,8 +41,6 @@ The action accepts a small set of input parameters.
 |`cache-suffix`|No|Suffix to use for the cache keys, which can be used to reset the caches if necessary; defaults to `"000"`|
 |`max-workers`|No|The maximum number of Poetry workers, if the default of 4x cores is too large for your GHA runners; ignored if unset|
 
-> _Note:_ The `max-workers` input parameter is ignored on the Windows platform.  I've experienced intermittent problems on Windows GHA runners where the Poetry install fails because two different processes are using the same file.  I've never reproduced this my Windows development environment.  I'm currently trying to work around this by setting `installer.parallel=false` on Windows.
-
 ## Environment
 
 The action exports a set of environment variables to the GitHub Actions environment.
