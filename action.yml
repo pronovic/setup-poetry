@@ -25,7 +25,7 @@ inputs:
     required: false
     default: "000"
   max-workers:
-    description: "Maximum number of Poetry workers, if default of cores*4 is too large"
+    description: "Maximum number of Poetry workers, if default of cores*4 is too large (ignored on Windows)"
     required: false
     default: ""
 runs:
