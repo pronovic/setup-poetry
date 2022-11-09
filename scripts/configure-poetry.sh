@@ -2,14 +2,6 @@
 # vim: set ft=bash ts=2 sw=2:
 # Configure Poetry
 
-# For Windows, we always use installer.parallel=false.  I've repeatedly run into
-# problems with the GHA Windows runners that appear to be related to the parallel
-# installer, like:
-#
-#   ERROR: Could not install packages due to an OSError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\tmpwryrq954_in_process.py'
-#
-# Hopefully, setting installer.parallel=false will lead to more stability.
-
 set -e
 
 echo "Setting cache-dir=$POETRY_CACHE"
