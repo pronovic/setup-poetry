@@ -47,6 +47,7 @@ runs:
         echo "POETRY_CONFIG_DIR=$GITHUB_WORKSPACE/.poetry/config" >> "$GITHUB_ENV"
         echo "POETRY_HOME=$GITHUB_WORKSPACE/.poetry/runtime" >> "$GITHUB_ENV"
         echo "POETRY_CACHE=$GITHUB_WORKSPACE/.poetry/cache" >> "$GITHUB_ENV"
+        echo "POETRY_PLUGIN_HASH=$(echo '${{ inputs.plugins }}' | sha1sum | sed 's/ .*$//')" >> "$GITHUB_ENV"
     - name: Configure Git to ignore Poetry-related directories
       shell: bash
       run: |
@@ -62,17 +63,21 @@ runs:
       uses: actions/cache@v3
       with:
         # It's important to base this key on the full Python installed version
-        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).
+        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
+        # to include the plugins in the hash, so everything is rebuilt from scratch
+        # if the requested plugins change.
         path: ".poetry/runtime"
-        key: "poetry-home|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ inputs.cache-suffix }}"
+        key: "poetry-home|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ inputs.cache-suffix }}"
     - name: Cache $POETRY_CACHE
       if: "${{ inputs.cache-poetry == 'true' }}"
       uses: actions/cache@v3
       with:
         # It's important to base this key on the full Python installed version
-        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).
+        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
+        # to include the plugins in the hash, so everything is rebuilt from scratch
+        # if the requested plugins change.
         path: ".poetry/cache"
-        key: "poetry-cache|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
+        key: "poetry-cache|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
     - name: Install Poetry
       shell: bash
       run: |
