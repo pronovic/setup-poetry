@@ -35,6 +35,16 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set SHA1 command on MacOS
+      if: "${{ github.runner_os == 'macOS' }}"
+      shell: bash
+      run: |
+        echo "SHA1=shasum"
+    - name: Use SHA1 command on other platforms
+      if: "${{ github.runner_os != 'macOS' }}"
+      shell: bash
+      run: |
+        echo "SHA1=sha1sum"
     - name: Establish Python version
       shell: bash
       run: |
@@ -51,7 +61,7 @@ runs:
         echo "POETRY_CONFIG_DIR=$GITHUB_WORKSPACE/.poetry/config" >> "$GITHUB_ENV"
         echo "POETRY_HOME=$GITHUB_WORKSPACE/.poetry/runtime" >> "$GITHUB_ENV"
         echo "POETRY_CACHE=$GITHUB_WORKSPACE/.poetry/cache" >> "$GITHUB_ENV"
-        echo "POETRY_PLUGIN_HASH=$(echo '${{ inputs.plugins }}' | sha1sum | sed 's/ .*$//')" >> "$GITHUB_ENV"
+        echo "POETRY_PLUGIN_HASH=$(echo '${{ inputs.plugins }}' | ${{ env.SHA1 }} | sed 's/ .*$//')" >> "$GITHUB_ENV"
     - name: Configure Git to ignore Poetry-related directories
       shell: bash
       run: |
