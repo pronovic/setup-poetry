@@ -6,7 +6,7 @@ branding:
   color: "blue"
 inputs:
   version:
-    description: "Version of Poetry to install (>= 1.2.0)"
+    description: "Version of Poetry to install (>= 1.8.0)"
     required: true
   plugins:
     description: "Comma-separated list of Poetry plugins to install"
@@ -28,6 +28,10 @@ inputs:
     description: "Maximum number of Poetry workers, if default of cores*4 is too large"
     required: false
     default: ""
+  disable-keyring:
+    description: "Whether to globally disable the Python keyring via Poetry configuration"
+    required: false
+    default: "true"  # defaults to true to be compatible with @v1 of this action
 runs:
   using: composite
   steps:
@@ -60,28 +64,28 @@ runs:
         echo "*" > "$POETRY_CACHE/.gitignore"
     - name: Cache $POETRY_HOME
       if: "${{ inputs.cache-poetry == 'true' }}"
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         # It's important to base this key on the full Python installed version
         # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
         # to include the plugins in the hash, so everything is rebuilt from scratch
         # if the requested plugins change.
         path: ".poetry/runtime"
-        key: "poetry-home|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ inputs.cache-suffix }}"
+        key: "poetry-home|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ inputs.cache-suffix }}"
     - name: Cache $POETRY_CACHE
       if: "${{ inputs.cache-poetry == 'true' }}"
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         # It's important to base this key on the full Python installed version
         # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
         # to include the plugins in the hash, so everything is rebuilt from scratch
         # if the requested plugins change.
         path: ".poetry/cache"
-        key: "poetry-cache|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
+        key: "poetry-cache|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
     - name: Install Poetry
       shell: bash
       run: |
-        # Install Poetry >=1.2.0 using the official installer
+        # Install Poetry >=1.8.0 using pipx
         "$GITHUB_ACTION_PATH/scripts/install-poetry.sh"
     - name: Add Poetry to the system $PATH
       shell: bash
@@ -98,16 +102,10 @@ runs:
       shell: bash
       env:
         MAX_WORKERS: "${{ inputs.max-workers }}"
+        DISABLE_KEYRING: "${{ inputs.disable-keyring }}"
       run: |
         # Configure Poetry
         "$GITHUB_ACTION_PATH/scripts/configure-poetry.sh"
-    - name: Disable the Python keyring
-      shell: bash
-      run: |
-        # Disable the Python keyring
-        # This prevents Poetry from using the Python keyring, which sometimes fails or hangs on Linux
-        # See: https://github.com/python-poetry/poetry/issues/2692#issuecomment-1235683370
-        echo "PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring" >> "$GITHUB_ENV"
     - name: Install Poetry plugins
       shell: bash
       env:
@@ -117,9 +115,9 @@ runs:
         "$GITHUB_ACTION_PATH/scripts/install-plugins.sh"
     - name: Cache Virtual Environment
       if: "${{ inputs.cache-venv == 'true' }}"
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         # It's important to base this key on the full Python installed version
         # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).
         path: ".venv"
-        key: "poetry-venv|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
+        key: "poetry-venv|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"

@@ -18,5 +18,10 @@ if [ ! -z "$MAX_WORKERS" ]; then
   poetry config installer.max-workers "$MAX_WORKERS"
 fi
 
+if [ "$DISABLE_KEYRING" == "true" ]; then
+  echo "Setting keyring.enabled=false"
+  poetry config keyring.enabled false
+fi
+
 poetry config --list
 

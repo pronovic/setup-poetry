@@ -6,8 +6,8 @@ As of this writing, I don't release very often, because the action meets my need
 
 ```
 $ git checkout master && git pull
-$ git tag -a -m "Release v1.0.2" v1.0.2
-$ git tag -f -a -m "Release v1.0.2" v1
+$ git tag -a -m "Release v2.0.0" v2.0.0
+$ git tag -f -a -m "Release v2.0.0" v2
 $ git push -f --tags
 ```
 
