@@ -62,6 +62,11 @@ runs:
         echo "*" > "$POETRY_HOME/.gitignore"
         mkdir -p "$POETRY_CACHE"
         echo "*" > "$POETRY_CACHE/.gitignore"
+    - name: Add Poetry to the system $PATH
+      shell: bash
+      run: |
+        # Add Poetry to the system $PATH
+        echo "$GITHUB_WORKSPACE/.poetry/runtime/bin" >> "$GITHUB_PATH"
     - name: Cache $POETRY_HOME
       if: "${{ inputs.cache-poetry == 'true' }}"
       uses: actions/cache@v4
@@ -87,11 +92,6 @@ runs:
       run: |
         # Install Poetry >=1.8.0 using pipx
         "$GITHUB_ACTION_PATH/scripts/install-poetry.sh"
-    - name: Add Poetry to the system $PATH
-      shell: bash
-      run: |
-        # Add Poetry to the system $PATH
-        echo "$GITHUB_WORKSPACE/.poetry/runtime/bin" >> "$GITHUB_PATH"
     - name: Display Poetry location and version
       shell: bash
       run: |
