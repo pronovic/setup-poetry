@@ -12,7 +12,6 @@ echo "POETRY_CACHE=$POETRY_CACHE"
 export PIPX_HOME="$POETRY_HOME/venv"
 export PIPX_BIN_DIR="$POETRY_HOME/bin"
 
-python -m pip install --user --upgrade pip
 python -m pip install --user --upgrade pipx
-pipx install poetry
+pipx install "poetry==${POETRY_VERSION}"
 
