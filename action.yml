@@ -36,12 +36,12 @@ runs:
   using: composite
   steps:
     - name: Set SHA1 command on MacOS
-      if: "${{ github.runner_os == 'macOS' }}"
+      if: "${{ runner.os == 'macOS' }}"
       shell: bash
       run: |
         echo "SHA1=shasum" >> "$GITHUB_ENV"
     - name: Use SHA1 command on other platforms
-      if: "${{ github.runner_os != 'macOS' }}"
+      if: "${{ runner.os != 'macOS' }}"
       shell: bash
       run: |
         echo "SHA1=sha1sum" >> "$GITHUB_ENV"
