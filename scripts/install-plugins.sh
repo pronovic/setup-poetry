@@ -7,7 +7,7 @@ export PIPX_BIN_DIR="$POETRY_HOME/bin"
 if [ ! -z "$POETRY_PLUGINS" ]; then
   while IFS=',' read -ra PARSED; do
     for PLUGIN_NAME in "${PARSED[@]}"; do
-      pipx inject poetry "$PLUGIN_NAME"
+      pipx inject --force poetry "$PLUGIN_NAME"
     done
   done <<< "$POETRY_PLUGINS"
 fi 

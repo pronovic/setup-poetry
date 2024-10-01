@@ -13,5 +13,5 @@ export PIPX_HOME="$POETRY_HOME/venv"
 export PIPX_BIN_DIR="$POETRY_HOME/bin"
 
 python -m pip install --user --upgrade pipx
-pipx install "poetry==${POETRY_VERSION}"
+pipx install --force "poetry==${POETRY_VERSION}"
 
