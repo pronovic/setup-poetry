@@ -35,7 +35,7 @@ The action accepts a small set of input parameters.
 |Input|Required?|Default|Description|
 |-----|---------|-------|-----------|
 |`version`|Yes||The version of Poetry to install; supports v1.8.0 or newer.|
-|`plugins`|No|_empty_|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/master/plugins/#using-plugins) to install; each comma-separated value must be valid input for `pipx inject poetry`|
+|`plugins`|No|_empty_|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/main/plugins/#using-plugins) to install; each comma-separated value must be valid input for `pipx inject poetry`|
 |`cache-venv`|No|`"false"`|Whether to cache the project virtual environment under `.venv`; a string `"true"` or `"false"`|
 |`cache-poetry`|No|`"false"`|Whether to cache the Poetry runtime & cache directories under `.poetry`; a string `"true"` or `"false"`|
 |`cache-suffix`|No|`"000"`|Suffix to use for the cache keys, which can be used to reset the caches if necessary|
