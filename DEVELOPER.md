@@ -5,7 +5,7 @@ This project is in active use in all of my own Python repositories under [github
 As of this writing, I don't release very often, because the action meets my needs and doesn't usually require adjustment.  As a result, releasing is a totally manual process:
 
 ```
-$ git checkout master && git pull
+$ git checkout main && git pull
 $ git tag -a -m "Release v2.0.0" v2.0.0
 $ git tag -f -a -m "Release v2.0.0" v2
 $ git push -f --tags
