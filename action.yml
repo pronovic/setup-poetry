@@ -9,7 +9,7 @@ inputs:
     description: "Version of Poetry to install (>= 1.8.0)"
     required: true
   plugins:
-    description: "Comma-separated list of Poetry plugins to install"
+    description: "Comma-separated list of Poetry plugins to install, deprecated for Poetry v2 or later"
     required: false
     default: ""
   cache-venv:
@@ -35,12 +35,12 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set SHA1 command on MacOS
+    - name: Set SHA1 command to shasum on MacOS
       if: "${{ runner.os == 'macOS' }}"
       shell: bash
       run: |
         echo "SHA1=shasum" >> "$GITHUB_ENV"
-    - name: Use SHA1 command on other platforms
+    - name: Set SHA1 command to sha1sum on other platforms
       if: "${{ runner.os != 'macOS' }}"
       shell: bash
       run: |

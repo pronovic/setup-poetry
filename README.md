@@ -1,12 +1,12 @@
 # setup-poetry
 
-Shared GitHub Action to install and set up the [Poetry](https://python-poetry.org/) build tool for [Python](https://www.python.org/).  It is available in the [GitHub Marketplace](https://github.com/marketplace/actions/setup-and-install-poetry) at no cost.
+Shared GitHub Action to install and set up the [Poetry](https://python-poetry.org/) build tool for [Python](https://www.python.org/).  It is available in the [GitHub Marketplace](https://github.com/marketplace/actions/setup-and-install-poetry) at no cost.  Poetry >= 1.8.0 is supported.
 
 ## Design
 
-This action is similar to [snok/install-poetry](https://github.com/snok/install-poetry), but it takes a slightly different approach.  It is also more opinionated, offering access to fewer of Poetry's underlying configuration options in favor of typical defaults.  Poetry >= 1.8.0 is installed using `pipx`, which is now the recommended installation method.
+This action is similar to [snok/install-poetry](https://github.com/snok/install-poetry), but it takes a slightly different approach.  It is also more opinionated, offering access to fewer of Poetry's underlying configuration options in favor of typical defaults.  Poetry is installed using `pipx`, which is now the recommended installation method.
 
-When using this action, the Poetry runtime, cache, and configuration directories as well as the project virtual environment are always created within the GitHub Actions workspace.  Poetry is installed and configured under `.poetry` and the virtualenv is created under `.venv`.  This has implications for some tools; for instance, you may need to configure code formatters like Black to ignore these two directories.
+When using this action, the Poetry runtime, cache, and configuration directories as well as the project virtual environment are always created within the GitHub Actions workspace.  Poetry is installed and configured under `.poetry`, and the virtualenv is created under `.venv`.  This has implications for some tools; for instance, you may need to configure code formatters like [black](https://pypi.org/project/black/) and [isort](https://pypi.org/project/isort/) to ignore these two directories.
 
 Unlike with the snok action, you are required to specify a version of Poetry to install.  The action will never install the latest version of Poetry by default.  You may also specify a list of Poetry plugins to install.
 
@@ -28,6 +28,8 @@ To use the action, add a stanza like this to your GitHub Actions workflow:
 
 The `poetry` command will be available on the system `$PATH`, and you can also reference the other environment variables discussed below.
 
+> _Note:_ if you are using Poetry v2 or later, you should configure [project plugins](https://python-poetry.org/docs/plugins/#project-plugins) (via the `[tool.poetry.requires-plugins]` option in `pyproject.toml`) instead of using the `plugins` configuration option shown above.
+
 ## Configuration
 
 The action accepts a small set of input parameters.
@@ -35,12 +37,14 @@ The action accepts a small set of input parameters.
 |Input|Required?|Default|Description|
 |-----|---------|-------|-----------|
 |`version`|Yes||The version of Poetry to install; supports v1.8.0 or newer.|
-|`plugins`|No|_empty_|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/main/plugins/#using-plugins) to install; each comma-separated value must be valid input for `pipx inject poetry`|
+|`plugins`|No|_empty_|A comma-separated list of [Poetry plugins](https://python-poetry.org/docs/main/plugins/#using-plugins) to install; each comma-separated value must be valid input for `pipx inject poetry`. _Deprecated if using Poetry v2 or later._|
 |`cache-venv`|No|`"false"`|Whether to cache the project virtual environment under `.venv`; a string `"true"` or `"false"`|
 |`cache-poetry`|No|`"false"`|Whether to cache the Poetry runtime & cache directories under `.poetry`; a string `"true"` or `"false"`|
 |`cache-suffix`|No|`"000"`|Suffix to use for the cache keys, which can be used to reset the caches if necessary|
 |`max-workers`|No|_unset_|The maximum number of Poetry workers, if the default of 4x cores is too large for your GHA runners; ignored if unset|
 |`disable-keyring`|No|`"true"`|Whether to globally disable the Python keyring via Poetry configuration; a string `"true"` or `"false"`|
+
+> _Note:_ if you are using Poetry v2 or later, you should configure [project plugins](https://python-poetry.org/docs/plugins/#project-plugins) (via the `[tool.poetry.requires-plugins]` option in `pyproject.toml`) instead of using the `plugins` configuration option.
 
 ## Environment
 

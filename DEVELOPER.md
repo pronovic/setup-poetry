@@ -11,5 +11,5 @@ $ git tag -f -a -m "Release v2.0.0" v2
 $ git push -f --tags
 ```
 
-Once that's done, find the [new tag](https://github.com/pronovic/setup-poetry/tags) and create a GitHub release from it.  
+Once that's done, find the [new tag](https://github.com/pronovic/setup-poetry/tags) and create a GitHub release from it.
 
