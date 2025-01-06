@@ -61,6 +61,7 @@ runs:
         echo "POETRY_CONFIG_DIR=$GITHUB_WORKSPACE/.poetry/config" >> "$GITHUB_ENV"
         echo "POETRY_HOME=$GITHUB_WORKSPACE/.poetry/runtime" >> "$GITHUB_ENV"
         echo "POETRY_CACHE=$GITHUB_WORKSPACE/.poetry/cache" >> "$GITHUB_ENV"
+        echo "POETRY_PROJECT_PLUGINS=$GITHUB_WORKSPACE/.poetry/plugins" >> "$GITHUB_ENV"
         echo "POETRY_PLUGIN_HASH=$(echo '${{ inputs.plugins }}' | ${{ env.SHA1 }} | sed 's/ .*$//')" >> "$GITHUB_ENV"
     - name: Configure Git to ignore Poetry-related directories
       shell: bash
@@ -72,6 +73,8 @@ runs:
         echo "*" > "$POETRY_HOME/.gitignore"
         mkdir -p "$POETRY_CACHE"
         echo "*" > "$POETRY_CACHE/.gitignore"
+        mkdir -p "$POETRY_PROJECT_PLUGINS"
+        echo "*" > "$POETRY_PROJECT_PLUGINS/.gitignore"
     - name: Add Poetry to the system $PATH
       shell: bash
       run: |
@@ -81,22 +84,35 @@ runs:
       if: "${{ inputs.cache-poetry == 'true' }}"
       uses: actions/cache@v4
       with:
-        # It's important to base this key on the full Python installed version
-        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
-        # to include the plugins in the hash, so everything is rebuilt from scratch
-        # if the requested plugins change.
+        # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
+        # not just a matrix version (i.e. 3.9).  Here, we include the action-controlled plugins
+        # in the key via $POETRY_PLUGIN_HASH, so the cache is rebuilt from scratch if that list
+        # of plugins changes.  However, project plugins (a Poetry v2 feature) are installed
+        # outside of the $POETRY_HOME directory, so those are ignored.
         path: ".poetry/runtime"
         key: "poetry-home|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ inputs.cache-suffix }}"
     - name: Cache $POETRY_CACHE
       if: "${{ inputs.cache-poetry == 'true' }}"
       uses: actions/cache@v4
       with:
-        # It's important to base this key on the full Python installed version
-        # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).  We also want
-        # to include the plugins in the hash, so everything is rebuilt from scratch
-        # if the requested plugins change.
+        # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
+        # not just a matrix version (i.e. 3.9).  Here, we include the action-controlled plugins
+        # in the key via $POETRY_PLUGIN_HASH, so the cache is rebuilt from scratch if that list
+        # of plugins changes.  However, project plugins (a Poetry v2 feature) are installed
+        # outside of the $POETRY_CACHE directory, so those are ignored.
         path: ".poetry/cache"
         key: "poetry-cache|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
+    - name: Cache $POETRY_PROJECT_PLUGINS
+      if: "${{ inputs.cache-poetry == 'true' }}"
+      uses: actions/cache@v4
+      with:
+        # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
+        # not just a matrix version (i.e. 3.9).  Here, we are specifically caching the project-
+        # managed plugins installed to $POETRY_PROJECT_PLUGINS, so $POETRY_PLUGIN_HASH is not
+        # part of the key. Instead, we assume that the cache should be rebuilt from scratch if
+        # pyproject.toml changes, since that file controls the list of project plugins.
+        path: ".poetry/plugins"
+        key: "poetry-plugins|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ hashFiles('**/pyproject.toml') }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
     - name: Install Poetry
       shell: bash
       run: |
@@ -116,12 +132,13 @@ runs:
       run: |
         # Configure Poetry
         "$GITHUB_ACTION_PATH/scripts/configure-poetry.sh"
-    - name: Install Poetry plugins
+    - name: Install action-controlled Poetry plugins
       shell: bash
       env:
         POETRY_PLUGINS: "${{ inputs.plugins }}"
       run: |
-        # Install requested Poetry plugins, if any
+        # Install action-controlled Poetry plugins, if any
+        # If you are using Poetry v2 or later, use project plugins instead
         "$GITHUB_ACTION_PATH/scripts/install-plugins.sh"
     - name: Cache Virtual Environment
       if: "${{ inputs.cache-venv == 'true' }}"
