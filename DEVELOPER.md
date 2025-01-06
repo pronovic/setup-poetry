@@ -8,7 +8,7 @@ As of this writing, I don't release very often, because the action meets my need
 $ git checkout main && git pull
 $ git tag -a -m "Release v2.0.0" v2.0.0
 $ git tag -f -a -m "Release v2.0.0" v2
-$ git push -f --tags
+$ git push -f --tags && git push
 ```
 
 Once that's done, find the [new tag](https://github.com/pronovic/setup-poetry/tags) and create a GitHub release from it.
