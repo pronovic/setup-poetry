@@ -82,7 +82,7 @@ runs:
         echo "$GITHUB_WORKSPACE/.poetry/runtime/bin" >> "$GITHUB_PATH"
     - name: Cache $POETRY_HOME
       if: "${{ inputs.cache-poetry == 'true' }}"
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
         # not just a matrix version (i.e. 3.9).  Here, we include the action-controlled plugins
@@ -93,7 +93,7 @@ runs:
         key: "poetry-home|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ inputs.cache-suffix }}"
     - name: Cache $POETRY_CACHE
       if: "${{ inputs.cache-poetry == 'true' }}"
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
         # not just a matrix version (i.e. 3.9).  Here, we include the action-controlled plugins
@@ -104,7 +104,7 @@ runs:
         key: "poetry-cache|v2|${{ runner.os }}|${{ env.PYTHON_VERSION }}|${{ env.POETRY_VERSION }}|${{ env.POETRY_PLUGIN_HASH }}|${{ hashFiles('**/poetry.lock') }}|${{ inputs.cache-suffix }}"
     - name: Cache $POETRY_PROJECT_PLUGINS
       if: "${{ inputs.cache-poetry == 'true' }}"
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         # It's important to base this key on the full Python installed version (i.e. 3.9.2) and
         # not just a matrix version (i.e. 3.9).  Here, we are specifically caching the project-
@@ -142,7 +142,7 @@ runs:
         "$GITHUB_ACTION_PATH/scripts/install-plugins.sh"
     - name: Cache Virtual Environment
       if: "${{ inputs.cache-venv == 'true' }}"
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         # It's important to base this key on the full Python installed version
         # (i.e. 3.9.2) and not just a matrix version (i.e. 3.9).
