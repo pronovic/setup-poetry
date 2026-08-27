@@ -18,7 +18,7 @@ To use the action, add a stanza like this to your GitHub Actions workflow:
 
 ```yaml
 - name: Setup Poetry
-  uses: pronovic/setup-poetry@v2
+  uses: pronovic/setup-poetry@v3
   with:
     version: "1.8.0"
     plugins: "poetry-dynamic-versioning==1.2.0"
